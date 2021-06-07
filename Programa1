@@ -1,0 +1,187 @@
+//Angel Fabrizio Menendez Solorzano
+//0909-20-10024
+//Examen Final Programacion 1 2021
+//Programa 1 "estudiantes"
+
+#include <iostream>
+using namespace std;
+
+struct nd {
+    int nr;
+    struct nd* sgte;
+};
+
+
+
+typedef nd* ptrPila;  
+
+
+
+void push(ptrPila& p, int valor)
+{
+    ptrPila aux;
+    aux = new(struct nd); 
+    aux->nr = valor;
+
+    aux->sgte = p;
+    p = aux;
+}
+
+
+
+int pop(ptrPila& p)
+{
+    int num;
+    ptrPila aux;
+
+    aux = p;
+    num = aux->nr;   
+
+    p = aux->sgte;
+    delete(aux);
+
+    return num;
+}
+
+
+
+void mostrar_pila(ptrPila p)
+{
+    ptrPila aux;
+    aux = p;     
+
+    while (aux != NULL)
+    {
+        cout << "\t" << aux->nr << endl;
+        aux = aux->sgte;
+    }
+}
+
+
+
+void destruir_pila(ptrPila& p)
+{
+    ptrPila aux;
+
+    while (p != NULL)
+    {
+        aux = p;
+        p = aux->sgte;
+        delete(aux);
+    }
+
+
+
+}
+
+
+void menu()
+
+{
+
+
+    cout << "\n\t    INGRESO NOTAS DE ESTUDIANTES \n\n";
+    cout << "      1. DIMENSION DEl ARRAY                                  " << endl;
+    cout << "      2. ELIMINAR ULTIMA NOTA INGRESADA                       " << endl;
+    cout << "      3. MOSTRAR TODAS LAS NOTAS en existencia                " << endl;
+    cout << "      4. BORRAR TODAS LAS NOTAS DE ESTUDIANTES en existencia  " << endl;
+    cout << "      5. FINALIZAR programa                                   " << endl;
+
+    cout << "\n DIGITE UNA OPCION A UTILIZAR: ";
+}
+
+int main()
+
+
+
+{
+    ptrPila p = NULL;  
+    int dato;
+    int opp;
+    int x; 
+
+    system("color 09"); 
+
+    
+    do
+    {
+       
+        menu();  
+        
+        cin >> opp;
+        switch (opp)
+        {
+           
+        case 1:
+            
+            
+            cout << "\n INGRESE una nota: "; cin >> dato;
+
+           
+            push(p, dato);
+
+           
+            cout << "\n\n\t\tNOTA " << dato << " REGISTRADA...\n\n";
+            cout << "\n\n\t\t SI DESEA INGRESAR OTRA NOTA VUELVA A LA OPCION 1...\n\n";
+
+           
+            break;
+
+
+           
+        case 2:
+
+           
+            x = pop(p);
+
+            
+            cout << "\n\n\t\tNOTA " << x << " ELIMINADA...\n\n";
+
+           
+            break;
+
+
+          
+        case 3:
+
+           
+            cout << "\n\n MOSTRANDO NOTAS DE LOS ESTUDIANTES \n\n";
+            
+            
+            
+
+            if (p != NULL)
+
+               
+                mostrar_pila(p);
+            else
+
+                cout << "\n\n\tPILA VACIA... SIN NOTAS REGISTRADAS..!" << endl;
+
+          
+            break;
+
+
+            
+        case 4:
+
+          
+            destruir_pila(p);
+
+       
+            cout << "\n\n\t\tPILA ELIMINADA..!\n\n";
+
+           
+            break;
+
+        }
+
+        cout << endl << endl;
+        system("pause");
+        system("cls"); 
+
+        
+    } while (opp != 5); 
+    return 0;
+    
+}
