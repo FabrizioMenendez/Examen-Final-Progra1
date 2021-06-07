@@ -1,0 +1,204 @@
+//Angel Fabrizio Menendez Solorzano
+//0909-20-10024
+//Examen final Programacion 1
+//programa 2
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+
+
+#define N 50
+
+typedef struct persona {
+ 
+    char nm[N];
+    
+};
+
+
+
+typedef struct nd {
+    struct persona per;
+    struct nd* sgte;
+};
+
+
+
+typedef struct cola {
+    struct nd* delante;
+    struct nd* atras;
+};
+
+
+
+void encolar(struct cola* q, struct persona valor) 
+{
+    struct nd* aux = new(struct nd);
+
+    aux->per = valor;
+    aux ->sgte = NULL;
+
+    if (q->delante == NULL)
+        q->delante = aux;   
+        
+    else
+        (q->atras)->sgte = aux;
+
+    q->atras = aux;        
+
+}
+
+
+struct persona desencolar(struct cola &q) {
+
+    struct persona nm;
+    struct nd* aux;
+
+    aux = q.delante; 
+    nm = aux->per;
+    q.delante = (q.delante)->sgte;
+
+    free(aux); 
+
+    return nm;
+}
+
+
+
+void muestraCola(struct cola q) {
+
+    struct nd* aux;
+
+    aux = q.delante;
+
+    while (aux != NULL) {
+        printf("%s -> ", aux->per.nm);
+        aux = aux->sgte;
+    }
+    printf("Fin de la cola\n");
+}
+
+
+
+void vaciaCola(struct cola* q) {
+
+    struct nd* aux;
+
+    while (q->delante != NULL) {
+        aux = q->delante;
+        q->delante = aux->sgte;
+
+        free(aux);
+    }
+    q->delante = NULL;
+    q->atras = NULL;
+}
+
+
+void menu() {
+
+   
+    
+    printf("\n\t NOMBRES DE CLIENTES\n\n");
+
+    printf(" 1. DIMENSION DE ARRAY                       \n");
+    printf(" 2. ELIMINAR EL PRIMER NOMBRE INGRESADO      \n");
+    printf(" 3. MOSTRAR TODOS LOS NOMBRES REGISTRADOS    \n");
+    printf(" 4. BORRAR TODOS LOS NOMBRES DE LOS CLIENTES \n");
+    printf(" 5. FINALIZAR PROGRAMA                       \n");
+    printf("\n  DIGITE UNA OPCION: ");
+
+}
+
+
+
+
+int main()
+{
+
+    struct cola q; 
+    q.delante = NULL;
+    q.atras = NULL;
+    struct persona dato;
+    struct persona x;
+    int op; 
+    system("color 09"); 
+
+   
+    do
+    {   
+        
+        menu(); 
+        cin >> op; 
+
+        
+        switch (op)
+        {
+
+      
+        case 1:
+            
+            
+            printf("\nINGRESE UN NOMBRE A GUARDAR: "); cin >> dato.nm;
+
+            
+            encolar(&q, dato);
+
+           
+            printf("\n\tNOMBRE REGISTRADO...", dato.nm);
+            printf("\n\t SI DESEA INGRESAR OTRO NOMBRE IR A OPCION 1...\n");
+
+          
+            break;
+           
+           
+        case 2:
+           
+            x = desencolar(q);
+
+            
+            printf("\n\n\t\tNOMBRE DESENCOLADO CON EXITO...\n\n", x.nm);
+
+
+
+            break;
+
+
+        case 3:
+            
+
+            printf("\n\n MOSTRAR\n\n");
+            if (q.delante != NULL) muestraCola(q);
+
+            else  printf("\n\n\tCola vacia...SIN NOMBRES REGISTRADOS..!\n");
+
+
+            break;
+
+
+
+        case 4:
+
+            vaciaCola(&q);
+            printf("\n\n\t\tCOLA ELIMINADA..!\n\n");
+
+
+            break;
+
+
+
+        } 
+        cout << endl << endl;
+        system("pause");
+        system("cls"); 
+
+
+    }while (op != 5);
+    
+
+  
+   return 0;
+}
